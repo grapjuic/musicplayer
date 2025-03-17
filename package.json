@@ -1,0 +1,21 @@
+{
+  "name": "musicplayer",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grapjuic/musicplayer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "spotify-web-api-node": "^5.0.2"
+  },
+  "devDependencies": {
+    "electron": "^35.0.2"
+  }
+}
