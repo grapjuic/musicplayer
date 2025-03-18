@@ -1,6 +1,29 @@
-node_modules/
+
 electron/
 dist/
 *.app/
 *.exe/
 *.dmg/
+
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Environment variables
+.env
+
+# Electron build files
+dist/
+out/
+*.asar
+
+# macOS system files
+.DS_Store
+
+# Logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# VSCode settings
+.vscode/

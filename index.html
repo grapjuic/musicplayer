@@ -7,14 +7,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to Your Music Player</h1>
+    <div id="music-player">
+        <h2>Now Playing</h2>
+        <div id="now-playing">
+            <img id="album-cover" src="placeholder.jpg" alt="Album Cover">
+            <p id="song-title">Not playing</p>
+        </div>
 
-    <audio id="audio-player" src="song.mp3"></audio>
+        <!-- Music Controls -->
+        <div class="controls">
+            <button id="prev">⏮</button>
+            <button id="play">▶️</button>
+            <button id="next">⏭</button>
+        </div>
 
-    <div class="controls">
-        <button id="play">▶️ Play</button>
-        <button id="pause">⏸ Pause</button>
-        <button id="stop">⏹ Stop</button>
+        <!-- Navigation Buttons -->
+        <div class="navigation">
+            <button id="open-playlists">📜 Playlists</button>
+            <button id="open-themes">🎨 Themes</button>
+        </div>
+
+        <!-- Connect to Spotify Button -->
+        <button id="connect-spotify">🎵 Connect to Spotify</button>
+
+        <!-- User Info -->
+        <div id="user-info">Not connected</div>
     </div>
 
     <script src="renderer.js"></script>
