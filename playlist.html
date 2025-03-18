@@ -1,19 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playlists</title>
-</head>
-<body>
-    <h2>🎵 Your Playlists</h2>
-    <p>Here you can view and select your playlists.</p>
-    <button onclick="goBack()">⬅ Back</button>
+<h2>🎵 Your Playlists</h2>
+<p>Select a playlist to start playing:</p>
+<div id="playlist-container"></div>
 
-    <script>
-        function goBack() {
-            window.history.back();
+<button id="back-btn">⬅ Back</button>
+
+<script>
+    document.getElementById("back-btn").addEventListener("click", () => {
+        console.log("⬅ Going back to main page...");
+        window.history.back(); // ✅ This works if you navigated to the page
+    });
+</script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        console.log("📜 Playlist page loaded.");
+        await fetchPlaylists(); // Fetch playlists when the page loads
+
+        document.getElementById("back-btn").addEventListener("click", () => {
+            window.electron.send("go-back");  // ✅ Use IPC function from preload.js
+        });
+    });
+
+    async function fetchPlaylists() {
+        let accessToken = localStorage.getItem("spotifyAccessToken");
+
+        if (!accessToken) {
+            console.error("❌ No access token found.");
+            document.getElementById("playlist-container").innerHTML = "<p>⚠ Please log in to Spotify first.</p>";
+            return;
         }
-    </script>
-</body>
-</html>
+
+        try {
+            const response = await fetch("https://api.spotify.com/v1/me/playlists", {
+                headers: { "Authorization": `Bearer ${accessToken}` }
+            });
+
+            if (!response.ok) throw new Error("Failed to fetch playlists");
+
+            const data = await response.json();
+            displayPlaylists(data.items);
+        } catch (error) {
+            console.error("Error fetching playlists:", error);
+            document.getElementById("playlist-container").innerHTML = "<p>⚠ Failed to load playlists.</p>";
+        }
+    }
+
+    function displayPlaylists(playlists) {
+        const container = document.getElementById("playlist-container");
+        container.innerHTML = ""; // Clear previous content
+
+        if (!playlists || playlists.length === 0) {
+            container.innerHTML = "<p>No playlists found.</p>";
+            return;
+        }
+
+        playlists.forEach(playlist => {
+            const div = document.createElement("div");
+            div.innerHTML = `
+                <p><strong>${playlist.name}</strong></p>
+                <button onclick="playPlaylist('${playlist.id}')">▶ Play</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    async function playPlaylist(playlistId) {
+        let accessToken = localStorage.getItem("spotifyAccessToken");
+
+        try {
+            const response = await fetch("https://api.spotify.com/v1/me/player/play", {
+                method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ context_uri: `spotify:playlist:${playlistId}` })
+            });
+
+            if (!response.ok) throw new Error("Failed to start playlist playback");
+            console.log("🎵 Now playing playlist:", playlistId);
+        } catch (error) {
+            console.error("Error playing playlist:", error);
+        }
+    }
+</script>

@@ -14,12 +14,23 @@
             <p id="song-title">Not playing</p>
         </div>
 
-        <!-- Music Controls -->
-        <div class="controls">
-            <button id="prev">⏮</button>
-            <button id="play">▶️</button>
-            <button id="next">⏭</button>
-        </div>
+    <!-- Music Controls -->
+    <div class="controls">
+        <button id="prev">⏮</button>
+        <button id="play">▶️</button>
+        <button id="pause" style="display: none;">⏸</button>
+        <button id="next">⏭</button>
+    </div>
+
+    <!-- Song Progress Bar -->
+    <div class="progress-container">
+        <span id="current-time">0:00</span>
+        <input type="range" id="progress-bar" value="0" min="0" max="100">
+        <span id="total-time">0:00</span>
+    </div>
+
+
+
 
         <!-- Navigation Buttons -->
         <div class="navigation">
