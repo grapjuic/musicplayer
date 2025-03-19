@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
-// 🎵 Fetch User Playlists from Spotify
+// fetch user Playlists from Spotify
 async function fetchPlaylists() {
     let accessToken = localStorage.getItem("spotifyAccessToken");
 
     if (!accessToken) {
-        console.error("❌ No access token found.");
+        console.error("No access token found.");
         document.getElementById("playlist-container").innerHTML = "<p>⚠ Please log in to Spotify first.</p>";
         return;
     }
@@ -37,10 +37,10 @@ async function fetchPlaylists() {
     }
 }
 
-// 🎶 Display Playlists in UI
+// display Playlists in UI
 function displayPlaylists(playlists) {
     const container = document.getElementById("playlist-container");
-    container.innerHTML = ""; // Clear previous content
+    container.innerHTML = ""; // clear previous content
 
     if (!playlists || playlists.length === 0) {
         container.innerHTML = "<p>No playlists found.</p>";
@@ -57,7 +57,7 @@ function displayPlaylists(playlists) {
     });
 }
 
-// ▶ Play Playlist
+// play Playlist
 async function playPlaylist(playlistId) {
     let accessToken = localStorage.getItem("spotifyAccessToken");
 

@@ -39,10 +39,30 @@
         </div>
 
         <!-- Connect to Spotify Button -->
-        <button id="connect-spotify">🎵 Connect to Spotify</button>
+        <button id="spotify-login">🎵 Connect to Spotify</button>
+        
+        
+
+
+
+    <p id="user-info">Not logged in</p>
+
+    <script>
+        document.getElementById("spotify-login").addEventListener("click", () => {
+            window.electron.loginToSpotify(); // Calls the Electron function to open login
+        });
+
+        // ✅ Check if user is already logged in
+        const accessToken = localStorage.getItem("spotifyAccessToken");
+        if (accessToken) {
+            document.getElementById("user-info").innerText = "✅ Connected to Spotify";
+            document.getElementById("spotify-login").style.display = "none";
+        }
+    </script>
+
 
         <!-- User Info -->
-        <div id="user-info">Not connected</div>
+        <!-- <div id="user-info">Not connected</div> -->
     </div>
 
     <script src="renderer.js"></script>

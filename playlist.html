@@ -7,7 +7,7 @@
 <script>
     document.getElementById("back-btn").addEventListener("click", () => {
         console.log("⬅ Going back to main page...");
-        window.history.back(); // ✅ This works if you navigated to the page
+        window.history.back(); // works if you navigated to the page
     });
 </script>
 
@@ -15,10 +15,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         console.log("📜 Playlist page loaded.");
-        await fetchPlaylists(); // Fetch playlists when the page loads
+        await fetchPlaylists(); // fetch playlists when the page loads
 
         document.getElementById("back-btn").addEventListener("click", () => {
-            window.electron.send("go-back");  // ✅ Use IPC function from preload.js
+            window.electron.send("go-back");  // use IPC function from preload.js
         });
     });
 
@@ -26,7 +26,7 @@
         let accessToken = localStorage.getItem("spotifyAccessToken");
 
         if (!accessToken) {
-            console.error("❌ No access token found.");
+            console.error("No access token found.");
             document.getElementById("playlist-container").innerHTML = "<p>⚠ Please log in to Spotify first.</p>";
             return;
         }
@@ -48,7 +48,7 @@
 
     function displayPlaylists(playlists) {
         const container = document.getElementById("playlist-container");
-        container.innerHTML = ""; // Clear previous content
+        container.innerHTML = ""; // clear previous content
 
         if (!playlists || playlists.length === 0) {
             container.innerHTML = "<p>No playlists found.</p>";

@@ -108,3 +108,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🎵 Spotify auth server running on http://localhost:${PORT}`);
 });
+
