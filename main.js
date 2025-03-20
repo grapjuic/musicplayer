@@ -1,7 +1,7 @@
 
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require("electron");
 const path = require("path");
-const { createTray, updateTraySong } = require("./tray"); // ✅ Import tray update function
+const { createTray, updateTraySong } = require("./tray"); // import tray update function
 
 let mainWindow;
 let tray = null;
