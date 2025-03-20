@@ -13,7 +13,7 @@ function createTray(mainWindow) {
     }
 
     const iconPath = path.join(__dirname, "assets", "music-icon.png");
-    tray = new Tray(iconPath); // ✅ Assign the icon
+    tray = new Tray(iconPath); // assign the icon
 
     const contextMenu = Menu.buildFromTemplate([
         { label: "Show", click: () => mainWindow.show() },

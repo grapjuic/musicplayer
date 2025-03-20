@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Drag area styling */
+        .drag-area {
+            -webkit-app-region: drag;
+            height: 30px;
+            width: 100%;
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
+    <!-- Custom Drag Area -->
+    <div class="drag-area"></div>
+
     <div id="music-player">
         <h2>Now Playing</h2>
         <div id="now-playing">
@@ -49,10 +62,10 @@
             }
 
             loginButton.addEventListener("click", () => {
-                window.electron.loginToSpotify(); // ✅ Open Spotify login
+                window.electron.loginToSpotify(); // open Spotify login
             });
 
-            // ✅ Check if user is logged in
+            // check if user is logged in
             const accessToken = localStorage.getItem("spotifyAccessToken");
             if (accessToken) {
                 try {
@@ -65,14 +78,14 @@
 
                     const userData = await response.json();
                     userInfo.innerText = `✅ Logged in as ${userData.display_name}`;
-                    loginButton.style.display = "none"; // ✅ Hide login button
+                    loginButton.style.display = "none"; // hide login button
                 } catch (error) {
                     console.error("Error fetching user data:", error);
                     userInfo.innerText = "❌ Not logged in";
-                    loginButton.style.display = "block"; // ✅ Show login button if error
+                    loginButton.style.display = "block"; // show login button if error
                 }
             } else {
-                loginButton.style.display = "block"; // ✅ Ensure it's visible if not connected
+                loginButton.style.display = "block"; // ensure it's visible if not connected
                 userInfo.innerText = "❌ Not logged in";
             }
         });

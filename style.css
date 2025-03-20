@@ -1,3 +1,15 @@
+.drag-area {
+    -webkit-app-region: drag;
+    height: 20px; /* Reduce height */
+    width: 100%;
+    background-color: transparent;
+}
+
+h2 {
+    margin-top: 0px; /* Reduce space above the "Now Playing" title */
+    padding-top: 0;
+}
+
 #now-playing-container {
     background: rgba(255, 255, 255, 0.9); /* Slightly opaque white */
     border-radius: 12px;

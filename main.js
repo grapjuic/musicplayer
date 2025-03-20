@@ -8,8 +8,12 @@ let tray = null;
 
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
-        width: 900,
-        height: 700,
+        width: 400,
+        height: 550,
+        resizable: false,
+        fullscreen: false,  
+        fullscreenable: false,
+        frame: false,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             nodeIntegration: false,
@@ -44,5 +48,19 @@ app.whenReady().then(() => {
     app.on("window-all-closed", (event) => {
         event.preventDefault(); // Prevents quitting when all windows close
     });
+    ipcMain.on("login-to-spotify", async () => {
+        const clientId = process.env.SPOTIFY_CLIENT_ID;  
+        const redirectUri = process.env.SPOTIFY_REDIRECT_URI;
+        const scope = "user-read-playback-state user-read-currently-playing";
+    
+        const authURL = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+        
+        shell.openExternal(authURL);
+    });
 
 });
+
+
+    
+  
+   
