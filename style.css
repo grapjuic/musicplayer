@@ -6,17 +6,25 @@
 }
 
 h2 {
-    margin-top: 0px; /* Reduce space above the "Now Playing" title */
+    margin:0; /* Reduce space above the "Now Playing" title */
+    padding: 0;
+    line-height:1;
     padding-top: 0;
 }
 
 #now-playing-container {
     background: rgba(255, 255, 255, 0.9); /* Slightly opaque white */
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 5px;
+    padding: 0px;
     text-align: center;
     width: 350px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content:flex-start;
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 #now-playing h2 {
@@ -24,10 +32,23 @@ h2 {
     font-weight: bold;
 }
 
+#album-cover {
+    display: block; /* Ensures it's treated as a block element */
+    margin: 0 auto; /* Centers the image */
+    width: 100%; /* Makes it responsive */
+    max-width: 350px; /* Prevents it from getting too large */
+    height: auto; /* Maintains aspect ratio */
+    object-fit: cover; /* Ensures it fills the space properly */
+}
+
+
 #song-title, #artist-name {
+    margin-top: 5px;
     color: black; /* Ensures contrast with the light background */
     font-size: 16px;
     font-weight: bold;
+    margin-bottom: 10px;
+    align-text: center;
 }
 
 #playlist-container h3 {

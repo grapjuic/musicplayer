@@ -1,6 +1,7 @@
 
 const { app, BrowserWindow, ipcMain, Tray, Menu } = require("electron");
 const path = require("path");
+const { shell } = require('electron');
 const { createTray, updateTraySong } = require("./tray"); // import tray update function
 
 let mainWindow;
@@ -8,8 +9,8 @@ let tray = null;
 
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
-        width: 400,
-        height: 550,
+        width: 350,
+        height: 530,
         resizable: false,
         fullscreen: false,  
         fullscreenable: false,

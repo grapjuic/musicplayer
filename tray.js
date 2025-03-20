@@ -26,14 +26,22 @@ function createTray(mainWindow) {
     console.log("✅ Tray created successfully!");
 }
 
+let lastSong = ""; // Store the last song title
+
 function updateTraySong(songTitle) {
     if (!tray) {
         console.error("❌ Tray not initialized! Cannot update song.");
         return;
     }
 
-    tray.setTitle(`${songTitle}`);
-    console.log(`🎵 Updated Tray Title: ${songTitle}`);
+    // Only update if the song is different from the last one
+    if (songTitle !== lastSong) {
+        lastSong = songTitle; // Update the last song
+        tray.setTitle(songTitle);
+
+        console.log(`🎵 Updated Tray Title: ${songTitle}`); // ✅ Only logs when the song changes
+    }
 }
+
 
 module.exports = { createTray, updateTraySong };
