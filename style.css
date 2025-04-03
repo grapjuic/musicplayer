@@ -1,91 +1,261 @@
+/* === Body === */
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url("assets/chihiro-bg.png") no-repeat center center fixed;
+  background-size: cover;
+  font-family: 'Jersey 25', cursive;
+}
+
 .drag-area {
-    -webkit-app-region: drag;
-    height: 20px; /* Reduce height */
-    width: 100%;
-    background-color: transparent;
+  -webkit-app-region: drag;
+  height: 30px;
+  width: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-h2 {
-    margin:0; /* Reduce space above the "Now Playing" title */
-    padding: 0;
-    line-height:1;
-    padding-top: 0;
+
+#music-player {
+  margin: 0 auto;
+  max-width: 400px;
+  width: 90vw;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 25px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
 }
 
-#now-playing-container {
-    background: rgba(255, 255, 255, 0.9); /* Slightly opaque white */
-    border-radius: 5px;
-    padding: 0px;
-    text-align: center;
-    width: 350px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content:flex-start;
-    margin-top: 0;
-    margin-bottom: 5px;
+
+#totoro-icon {
+  width: 60px;
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
 }
 
-#now-playing h2 {
-    color: black; /* Ensure the title is readable */
-    font-weight: bold;
+
+#now-playing {
+  position: relative;
 }
 
 #album-cover {
-    display: block; /* Ensures it's treated as a block element */
-    margin: 0 auto; /* Centers the image */
-    width: 100%; /* Makes it responsive */
-    max-width: 350px; /* Prevents it from getting too large */
-    height: auto; /* Maintains aspect ratio */
-    object-fit: cover; /* Ensures it fills the space properly */
+  width: 100%;
+  max-width: 350px;
+  border-radius: 15px;
+  margin-bottom: 0;
 }
 
-
-#song-title, #artist-name {
-    margin-top: 5px;
-    color: black; /* Ensures contrast with the light background */
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    align-text: center;
+#song-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.6);
+  font-family: 'Georgia', serif;
+  font-size: 26px;
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 4px 12px;
+  border-radius: 8px;
 }
 
-#playlist-container h3 {
-    color: white; /* Ensures contrast with dark background */
-    margin-top: 20px;
+/* === Spotify Login === */
+#spotify-login {
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+#spotify-login:hover {
+  background-color: #17a94d;
 }
 
 .controls {
-    display: flex;
-    justify-content: center;  /* Centers the buttons */
-    gap: 10px;  /* Adds space between buttons */
-    margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
 }
 
 .controls button {
-    padding: 10px;
-    font-size: 20px;
-    border: none;
-    background-color: #f3f3f3;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.1s ease;
 }
 
 .controls button:hover {
-    background-color: #ddd;
+  transform: scale(1.1);
+}
+
+
+
+
+#prev {
+  background-image: url("assets/playback-icon.png");
+}
+
+#next {
+  background-image: url("assets/skip-icon.png");
+}
+
+#play {
+  background-image: url("assets/play-icon.png");
+}
+
+#pause {
+  background-image: url("assets/pause-icon.png");
+  
+}
+
+#play, #pause {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-size: 60%;     
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #e9a6a6;
+
+  border: none;
+}
+
+#prev, #next{
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: inherit;         
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border: none;
 }
 
 .progress-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.progress-wrapper {
+  position: relative;
+  width: 60%;
+  height: 30px;
 }
 
 #progress-bar {
-    width: 60%;
-    cursor: pointer;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #f3c6c6; 
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* === Webkit Slider Track === */
+#progress-bar::-webkit-slider-runnable-track {
+  height: 8px;
+  background: #f3c6c6;
+  border-radius: 10px;
+}
+
+/* === totoro thumb === */
+#progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+/* === firefox === */
+#progress-bar::-moz-range-track {
+  height: 8px;
+  background: #f3c6c6;
+  border-radius: 10px;
+}
+
+#progress-bar::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border: none;
+}
+
+/* === totoro floating above the slider === */
+#totoro-thumb {
+  position: absolute;
+  top: -80px; 
+  width: 80px;
+  z-index: 5;
+  pointer-events: none;
+  transition: left 0.1s ease;
+}
+
+
+
+
+/* floating animation */
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+
+
+/* === Playlists & Themes Buttons === */
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+  padding: 0 15px;
+}
+
+.navigation button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #222;
+}
+
+.navigation button:hover {
+  color: #555;
+}
+
+/* === User Info (Logged In/Out Text) === */
+#user-info {
+  font-size: 14px;
+  color: #555;
+  margin-top: 8px;
 }

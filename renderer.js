@@ -1,5 +1,31 @@
 console.log("🎵 Renderer process running...");
+const progressBar = document.getElementById('progress-bar');
+const totoroThumb = document.getElementById('totoro-thumb');
 
+
+function updateTotoroPosition() {
+    const percent = progressBar.value / 100;
+
+    const wrapper = document.querySelector('.progress-wrapper');
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const barRect = progressBar.getBoundingClientRect();
+
+    const barWidth = progressBar.offsetWidth;
+    const wrapperLeft = wrapperRect.left;
+    const barLeft = barRect.left;
+
+    const relativeOffset = (percent * barWidth) + (barLeft - wrapperLeft);
+
+    totoroThumb.style.left = `${relativeOffset - totoroThumb.offsetWidth / 2}px`;
+    totoroThumb.style.top = `-30px`; 
+}
+
+
+setInterval(() => {
+    updateTotoroPosition();
+}, 300);
+
+// Add listeners (after DOM is ready)
 document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ DOM fully loaded!");
 
@@ -11,7 +37,15 @@ document.addEventListener("DOMContentLoaded", () => {
     setupButtons();
     fetchSpotifyToken(); // Get token when app starts
     setInterval(fetchCurrentlyPlaying, 1000); // Auto-update song info every second
+
+    //totoro movement
+    progressBar.addEventListener('input', updateTotoroPosition);
+    window.addEventListener('resize', updateTotoroPosition);
+    updateTotoroPosition(); // Initial position
 });
+
+
+
 
 /* ----------------- 🟢 UI Setup Functions ----------------- */
 

@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player</title>
@@ -31,23 +33,31 @@
 
         <!-- Music Controls -->
         <div class="controls">
-            <button id="prev">⏮</button>
-            <button id="play">▶️</button>
-            <button id="pause" style="display: none;">⏸</button>
-            <button id="next">⏭</button>
+            <button id="prev"></button>
+            <button id="play"></button>
+            <button id="pause" style="display: none;"></button>
+            <button id="next"></button>
         </div>
 
-        <!-- Song Progress Bar -->
-        <div class="progress-container">
-            <span id="current-time">0:00</span>
-            <input type="range" id="progress-bar" value="0" min="0" max="100">
-            <span id="total-time">0:00</span>
+    <!-- Song Progress Bar -->
+    <div class="progress-container">
+        <span id="current-time">0:00</span>
+        <div class="progress-wrapper">
+          <input type="range" id="progress-bar" value="0" min="0" max="100">
+          <img id="totoro-thumb" src="assets/totoro-icon.png" alt="Totoro">
         </div>
+        <span id="total-time">0:00</span>
+      </div>
+      
+      
+     
+    
+          
 
         <!-- Navigation Buttons -->
         <div class="navigation">
-            <button id="open-playlists">📜 Playlists</button>
-            <button id="open-themes">🎨 Themes</button>
+            <button id="open-playlists">playlists</button>
+            <button id="open-themes">themes</button>
         </div>
     </div>
 

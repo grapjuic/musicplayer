@@ -15,6 +15,7 @@ app.whenReady().then(() => {
         fullscreen: false,  
         fullscreenable: false,
         frame: false,
+        webSecurity: false,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
             nodeIntegration: false,
