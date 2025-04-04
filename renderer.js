@@ -3,6 +3,17 @@ const progressBar = document.getElementById('progress-bar');
 const totoroThumb = document.getElementById('totoro-thumb');
 const loginButton = document.getElementById("spotify-login");
 const userInfo = document.getElementById("user-info");
+const logoutLogo = document.getElementById("logout-logo");
+
+logoutLogo.addEventListener("click", () => {
+    const confirmLogout = confirm("Log out of Spotify?");
+    if (confirmLogout) {
+        localStorage.removeItem("spotifyAccessToken");
+        userInfo.innerText = "❌ Not logged in";
+        loginButton.style.display = "block";
+    }
+});
+
 
 const accessToken = localStorage.getItem("spotifyAccessToken");
 if (accessToken) {
