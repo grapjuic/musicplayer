@@ -1,6 +1,32 @@
 console.log("🎵 Renderer process running...");
 const progressBar = document.getElementById('progress-bar');
 const totoroThumb = document.getElementById('totoro-thumb');
+const loginButton = document.getElementById("spotify-login");
+const userInfo = document.getElementById("user-info");
+
+const accessToken = localStorage.getItem("spotifyAccessToken");
+if (accessToken) {
+    // Try fetching user info to confirm token is valid
+    fetch("https://api.spotify.com/v1/me", {
+        headers: { "Authorization": `Bearer ${accessToken}` }
+    })
+    .then(res => res.json())
+    .then(data => {
+        // Hide user info text if token works
+        userInfo.style.display = "none";
+        loginButton.style.display = "none";
+    })
+    .catch(err => {
+        console.error("⚠️ Invalid token or fetch error", err);
+        userInfo.innerText = "❌ Not logged in";
+        userInfo.style.display = "block";
+        loginButton.style.display = "block";
+    });
+} else {
+    userInfo.innerText = "❌ Not logged in";
+    userInfo.style.display = "block";
+    loginButton.style.display = "block";
+}
 
 
 function updateTotoroPosition() {
@@ -18,6 +44,8 @@ function updateTotoroPosition() {
 
     totoroThumb.style.left = `${relativeOffset - totoroThumb.offsetWidth / 2}px`;
     totoroThumb.style.top = `-30px`; 
+
+
 }
 
 
@@ -25,7 +53,7 @@ setInterval(() => {
     updateTotoroPosition();
 }, 300);
 
-// Add listeners (after DOM is ready)
+// add listeners (after DOM is ready)
 document.addEventListener("DOMContentLoaded", () => {
     console.log("✅ DOM fully loaded!");
 
@@ -47,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-/* ----------------- 🟢 UI Setup Functions ----------------- */
+/* ----------------- UI Setup Functions ----------------- */
 
 // set up button listeners
 function setupButtons() {
@@ -112,7 +140,7 @@ function setupPlaybackButtons() {
     }
 }
 
-/* ----------------- 🔄 Spotify API Functions ----------------- */
+/* ----------------- Spotify API Functions ----------------- */
 
 // fetch Spotify Access Token
 function fetchSpotifyToken() {
@@ -211,14 +239,17 @@ function updateTraySong(songData) {
 
 
 function updateNowPlayingUI(songData) {
-    const nowPlayingContainer = document.getElementById("now-playing");
+    const songTitle = document.getElementById("song-title");
+    const albumCoverImg = document.getElementById("album-cover");
     const playButton = document.getElementById("play");
     const pauseButton = document.getElementById("pause");
 
     if (!songData || !songData.item) {
-        nowPlayingContainer.innerHTML = "<p>Not playing</p>";
-        playButton.style.display = "block"; // Show Play button
-        pauseButton.style.display = "none"; // Hide Pause button
+        songTitle.innerText = "Not playing";
+        albumCoverImg.src = "";
+        albumCoverImg.alt = "Album Cover";
+        playButton.style.display = "block";
+        pauseButton.style.display = "none";
         return;
     }
 
@@ -226,29 +257,29 @@ function updateNowPlayingUI(songData) {
     const artistName = songData.item.artists.map(artist => artist.name).join(", ");
     const albumCover = songData.item.album.images[0]?.url || "https://via.placeholder.com/100";
 
-    nowPlayingContainer.innerHTML = `
-        <img src="${albumCover}" alt="${songName}" width="300">
-        <p><strong>${songName}</strong> - ${artistName}</p>
-    `;
+    // only update individual elements
+    songTitle.innerHTML = `<strong>${songName}</strong> – ${artistName}`;
+    albumCoverImg.src = albumCover;
+    albumCoverImg.alt = songName;
 
-    // check playback state to toggle play/pause button
+    // playback state check
     fetch("https://api.spotify.com/v1/me/player", {
         headers: { "Authorization": `Bearer ${localStorage.getItem("spotifyAccessToken")}` }
     })
     .then(response => response.json())
     .then(playerState => {
         if (playerState.is_playing) {
-            playButton.style.display = "none";  // Hide Play button
-            pauseButton.style.display = "block"; // Show Pause button
+            playButton.style.display = "none";
+            pauseButton.style.display = "block";
         } else {
-            playButton.style.display = "block"; // Show Play button
-            pauseButton.style.display = "none"; // Hide Pause button
+            playButton.style.display = "block";
+            pauseButton.style.display = "none";
         }
     }).catch(error => {
         console.error("Error fetching player state:", error);
     });
 
-    // send song title to the tray
+    // update tray with song name
     window.electron.updateTraySong(`${songName} - ${artistName}`);
 }
 
@@ -261,10 +292,15 @@ function updateProgressBar(songData) {
 
     if (!songData || !songData.item) return;
 
-    let currentTime = songData.progress_ms;
-    let totalTime = songData.item.duration_ms;
+    let currentTime = songData.progress_ms || 0;
+    let totalTime = songData.item.duration_ms || 1;
+    
+    let percent = (currentTime / totalTime) * 100;
+    
+    progressBar.value = percent;
+    progressBar.style.background = `linear-gradient(to right, #e9a6a6 ${percent}%, #ddd ${percent}%)`;
+    
 
-    progressBar.value = (currentTime / totalTime) * 100;
     currentTimeLabel.textContent = formatTime(currentTime);
     totalTimeLabel.textContent = formatTime(totalTime);
 }
@@ -276,7 +312,7 @@ function formatTime(ms) {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }
 
-/* ----------------- 🎵 Playback Controls ----------------- */
+//playback controls
 
 // play / pause track
 async function controlPlayback(action) {
