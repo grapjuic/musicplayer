@@ -5,10 +5,11 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: url("assets/chihiro-bg.png") no-repeat center center fixed;
+  background: transparent;
   background-size: cover;
   font-family: 'Jersey 25', cursive;
 }
+
 
 .drag-area {
   -webkit-app-region: drag;
@@ -25,13 +26,12 @@ body {
   margin: 0 auto;
   max-width: 400px;
   width: 90vw;
-  background-color: rgba(255, 255, 255, 0.6);
   border-radius: 25px;
   padding: 30px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
+
 
 
 #totoro-icon {
@@ -54,9 +54,11 @@ body {
 
 #album-cover {
   width: 100%;
-  max-width: 350px;
+  max-width: 450px;
   border-radius: 15px;
   margin-bottom: 0;
+  transition: all 0.3s ease;
+
 }
 
 #song-title {
@@ -279,4 +281,7 @@ body {
   transform: scale(1.1);
   opacity: 0.8;
 }
+
+
+
 

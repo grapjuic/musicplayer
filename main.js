@@ -38,10 +38,6 @@ app.whenReady().then(() => {
         mainWindow.loadFile("playlist.html");
     });
 
-    ipcMain.on("open-themes", () => {
-        console.log("🎨 Opening themes.html...");
-        mainWindow.loadFile("themes.html");
-    });
 
     ipcMain.on("go-back", () => {
         console.log("⬅ Navigating back to index.html");

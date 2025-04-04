@@ -104,13 +104,7 @@ function setupNavigationButtons() {
         });
     }
 
-    const themesButton = document.getElementById("open-themes");
-    if (themesButton) {
-        themesButton.addEventListener("click", () => {
-            console.log("🎨 Opening themes...");
-            window.electron.openThemes();
-        });
-    }
+
 }
 
 // playback buttons

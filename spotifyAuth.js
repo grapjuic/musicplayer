@@ -7,12 +7,13 @@ const PORT = 3000;
 
 app.use(cors());
 
-// initialize spotify API with credentials
+require('dotenv').config();
+
 const spotifyApi = new SpotifyWebApi({
-    clientId: '1efd2633040b4aebb55f04da08765eed', 
-    clientSecret: 'f4b9424540f343ac87d4b58c5e91e0c9', 
-    redirectUri: 'http://localhost:3000/callback' 
-});
+    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+    redirectUri: process.env.SPOTIFY_REDIRECT_URI,
+  });
 
 // redirect user to spotify login
 app.get('/login', (req, res) => {
@@ -25,9 +26,11 @@ app.get('/login', (req, res) => {
         "user-library-read",
         "streaming"
     ];
-    const authorizeURL = spotifyApi.createAuthorizeURL(scopes);
+    const authorizeURL = spotifyApi.createAuthorizeURL(scopes, null, true);
+    console.log("Redirecting to:", authorizeURL);
     res.redirect(authorizeURL);
 });
+
 
 // handle callback from spotify
 app.get('/callback', async (req, res) => {
