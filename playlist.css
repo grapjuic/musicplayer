@@ -1,0 +1,80 @@
+/* === Playlist Page Styles === */
+
+@import url("https://fonts.googleapis.com/css2?family=Jersey+25&display=swap");
+
+body {
+    font-family: 'Jersey 25', cursive;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 20px;
+  }
+  
+
+h2 {
+  font-size: 2rem;
+}
+
+#playlist-container {
+  margin-top: 20px;
+}
+
+.playlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 20px;
+}
+
+.playlist-card {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.playlist-card:hover {
+  transform: scale(1.03);
+}
+
+.playlist-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.playlist-card h3 {
+  margin: 10px 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.playlist-card button {
+  margin-top: 5px;
+  padding: 6px 12px;
+  border: none;
+  background: #000;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.playlist-card button:hover {
+  background: #222;
+}
+
+#back-btn {
+  margin-top: 30px;
+  padding: 10px 18px;
+  font-size: 14px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#back-btn:hover {
+  background-color: #555;
+}
