@@ -101,6 +101,7 @@ let mainWindow;
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
     width: 350, height: 530, frame: false,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
