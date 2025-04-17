@@ -1,4 +1,6 @@
 /* === GLOBAL STYLES === */
+
+
 body {
   margin: 0;
   display: flex;
@@ -9,6 +11,7 @@ body {
   font-family: 'Jersey 25', cursive;
 }
 
+  
 .drag-area {
   -webkit-app-region: drag;
   height: 30px;
