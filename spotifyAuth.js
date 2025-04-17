@@ -1,114 +1,127 @@
+const path = require('path');
+const dotenvResult = require('dotenv').config({
+  path: path.resolve(__dirname, '.env'),
+});
+if (dotenvResult.error) {
+  console.warn('⚠️  Could not load .env file:', dotenvResult.error);
+}
+
+// pull in your three vars or crash early:
+const {
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_CLIENT_SECRET,
+  SPOTIFY_REDIRECT_URI,
+  AUTH_SERVER_PORT = 3000
+} = process.env;
+
+if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REDIRECT_URI) {
+  console.error('Missing one or more Spotify env vars. Make sure .env contains:');
+  console.error('   SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REDIRECT_URI');
+  process.exit(1);
+}
+
 const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 const cors = require('cors');
 
 const app = express();
-const PORT = 3000;
-
 app.use(cors());
+app.use(express.json());
 
-require('dotenv').config();
-
+// initialize the Spotify API wrapper
 const spotifyApi = new SpotifyWebApi({
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    redirectUri: process.env.SPOTIFY_REDIRECT_URI,
-  });
+  clientId: SPOTIFY_CLIENT_ID,
+  clientSecret: SPOTIFY_CLIENT_SECRET,
+  redirectUri: SPOTIFY_REDIRECT_URI,
+});
 
-// redirect user to spotify login
+console.log('Spotify Auth Server');
+console.log(' • Client ID:        ', SPOTIFY_CLIENT_ID);
+console.log(' • Redirect URI:     ', SPOTIFY_REDIRECT_URI);
+console.log(` • Listening on port ${AUTH_SERVER_PORT}\n`);
+//login
 app.get('/login', (req, res) => {
-    const scopes = [
-        "user-read-playback-state",
-        "user-modify-playback-state",
-        "user-read-currently-playing",
-        "playlist-read-private",
-        "playlist-read-collaborative",
-        "user-library-read",
-        "streaming"
-    ];
-    const authorizeURL = spotifyApi.createAuthorizeURL(scopes, null, true);
-    console.log("Redirecting to:", authorizeURL);
-    res.redirect(authorizeURL);
+  const scopes = [
+    'user-read-playback-state',
+    'user-modify-playback-state',
+    'user-read-currently-playing',
+    'playlist-read-private',
+    'playlist-read-collaborative',
+    'user-library-read',
+    'streaming',
+  ];
+
+  // createAuthorizeURL automatically includes client_id, redirect_uri, state, etc.
+  const state = Math.random().toString(36).substring(2, 15);
+  const authorizeURL = spotifyApi.createAuthorizeURL(scopes, state, true);
+
+  console.log('🌐 Redirecting to Spotify Accounts:', authorizeURL);
+  res.redirect(authorizeURL);
 });
 
-
-// handle callback from spotify
+//callback
 app.get('/callback', async (req, res) => {
-    const code = req.query.code;
-    if (!code) {
-        return res.send('Error: No authorization code provided.');
-    }
+  const code = req.query.code;
+  if (!code) {
+    return res.status(400).send('Authorization code missing from callback.');
+  }
 
-    try {
-        const data = await spotifyApi.authorizationCodeGrant(code);
-        const accessToken = data.body['access_token'];
-        const refreshToken = data.body['refresh_token'];
+  try {
+    const data = await spotifyApi.authorizationCodeGrant(code);
+    const accessToken  = data.body['access_token'];
+    const refreshToken = data.body['refresh_token'];
 
-        // store tokens in Spotify API instance
-        spotifyApi.setAccessToken(accessToken);
-        spotifyApi.setRefreshToken(refreshToken);
+    spotifyApi.setAccessToken(accessToken);
+    spotifyApi.setRefreshToken(refreshToken);
+    global.spotifyAccessToken  = accessToken;
+    global.spotifyRefreshToken = refreshToken;
 
-        console.log("Access Token:", accessToken);
-        console.log("Refresh Token:", refreshToken);
+    console.log('🔑 Got tokens—Access:', accessToken.slice(0,8)+'…', 'Refresh:', refreshToken.slice(0,8)+'…');
 
-        //store tokens globally (in-memory storage for now)
-        global.spotifyAccessToken = accessToken;
-        global.spotifyRefreshToken = refreshToken;
-
-        // redirect user back to the app
-        res.send(`
-            <script>
-                localStorage.setItem('spotifyAccessToken', '${accessToken}');
-                localStorage.setItem('spotifyRefreshToken', '${refreshToken}');
-                window.close();
-            </script>
-            <p> Authentication successful! You can now close this tab and return to the app.</p>
-        `);
-    } catch (err) {
-        console.error("Error getting tokens:", err);
-        res.send("Authentication failed.");
-    }
+    // this page closes itself and notifies the opener
+    res.send(`
+      <html><body>
+        <script>
+          localStorage.setItem('spotifyAccessToken', '${accessToken}');
+          localStorage.setItem('spotifyRefreshToken', '${refreshToken}');
+          // If you opened this from Electron with window.open:
+          if (window.opener) window.opener.postMessage('spotify-auth-success', '*');
+          window.close();
+        </script>
+        <p>Authentication succeeded—You can close this window.</p>
+      </body></html>
+    `);
+  } catch (err) {
+    console.error('Error exchanging code for tokens:', err);
+    res.status(500).send('⚠️ Authentication failed.');
+  }
 });
 
-// serve access token to electron
+//token
 app.get('/token', (req, res) => {
-    if (spotifyApi.getAccessToken()) {
-        res.json({ accessToken: spotifyApi.getAccessToken() });
-    } else {
-        res.status(401).send('No access token available.');
-    }
+  const token = spotifyApi.getAccessToken();
+  if (!token) return res.status(401).json({ error: 'No access token available' });
+  res.json({ accessToken: token });
 });
 
-app.get('/refresh-token', async (req, res) => {
-    try {
-        const refreshToken = spotifyApi.getRefreshToken();
-        if (!refreshToken) return res.status(401).send("No refresh token available");
-
-        const data = await spotifyApi.refreshAccessToken();
-        const newAccessToken = data.body['access_token'];
-
-        spotifyApi.setAccessToken(newAccessToken);
-        console.log("Refreshed Access Token:", newAccessToken);
-
-        res.json({ accessToken: newAccessToken });
-    } catch (err) {
-        console.error("Error refreshing token:", err);
-        res.status(500).send("Failed to refresh token");
-    }
+//refresh token
+app.get('/refresh_token', async (req, res) => {
+  try {
+    const data = await spotifyApi.refreshAccessToken();
+    const newToken = data.body['access_token'];
+    spotifyApi.setAccessToken(newToken);
+    console.log('Refreshed access token:', newToken.slice(0,8)+'…');
+    res.json({ accessToken: newToken });
+  } catch (err) {
+    console.error('Failed to refresh token:', err);
+    res.status(500).send('Failed to refresh token');
+  }
 });
 
+//server check
+app.get('/', (req, res) => res.send('🎵 Spotify Auth Server is up'));
 
-app.get('/success', (req, res) => {
-    res.send('Authentication successful! You can now close this tab and return to the app.');
+//listening
+app.listen(AUTH_SERVER_PORT, () => {
+  console.log(`Auth server listening on http://localhost:${AUTH_SERVER_PORT}/\n`);
 });
-
-
-// default route (prevents "Cannot GET /" errors)
-app.get('/', (req, res) => {
-    res.send('🎵 Spotify Auth Server is running!');
-});
-
-app.listen(PORT, () => {
-    console.log(`🎵 Spotify auth server running on http://localhost:${PORT}`);
-});
-

@@ -32,10 +32,9 @@
             <img id="album-cover" src="" alt="Album Cover">
             <button id="spotify-login">🎵 Connect to Spotify</button>
             <p id="user-info">Not logged in</p>
+            <p id="user-info" style="display:none;"></p>
           </div>
-          
-          
-    
+
 
         <!-- Music Controls -->
         <div class="controls">
@@ -55,10 +54,6 @@
         <span id="total-time">0:00</span>
       </div>
       
-      
-     
-    
-          
 
         <!-- Navigation Buttons -->
         <div class="navigation">
@@ -67,45 +62,6 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const loginButton = document.getElementById("spotify-login");
-            const userInfo = document.getElementById("user-info");
-
-            if (!window.electron) {
-                console.error("❌ Electron API not found!");
-                return;
-            }
-
-            loginButton.addEventListener("click", () => {
-                window.electron.loginToSpotify(); // open Spotify login
-            });
-
-            // check if user is logged in
-            const accessToken = localStorage.getItem("spotifyAccessToken");
-            if (accessToken) {
-                try {
-                    // Fetch user data from Spotify API
-                    const response = await fetch("https://api.spotify.com/v1/me", {
-                        headers: { "Authorization": `Bearer ${accessToken}` }
-                    });
-
-                    if (!response.ok) throw new Error("Failed to fetch user data");
-
-                    const userData = await response.json();
-                    userInfo.innerText = `✅ Logged in as ${userData.display_name}`;
-                    loginButton.style.display = "none"; // hide login button
-                } catch (error) {
-                    console.error("Error fetching user data:", error);
-                    userInfo.innerText = "❌ Not logged in";
-                    loginButton.style.display = "block"; // show login button if error
-                }
-            } else {
-                loginButton.style.display = "block"; // nsure it's visible if not connected
-                userInfo.innerText = "❌ Not logged in";
-            }
-        });
-    </script>
 
     <script src="renderer.js"></script>
 </body>
