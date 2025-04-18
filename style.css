@@ -1,6 +1,5 @@
 /* === GLOBAL STYLES === */
 
-
 body {
   margin: 0;
   display: flex;
@@ -9,7 +8,14 @@ body {
   height: 100vh;
   background-size: cover;
   font-family: 'Jersey 25', cursive;
+  overflow: hidden;
 }
+
+/* ⬇️ this must be separate */
+::-webkit-scrollbar {
+  display: none;
+}
+
 
   
 .drag-area {
@@ -20,6 +26,10 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#main-wrapper {
+  overflow: hidden;
 }
 
 #user-info {

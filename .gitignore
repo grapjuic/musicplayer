@@ -27,3 +27,7 @@ yarn-error.log
 
 # VSCode settings
 .vscode/
+
+        chihiro-darwin-x64/
+        chihiro-win32-x64/
+        musicplayer/
