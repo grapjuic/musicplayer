@@ -98,7 +98,7 @@ if (!gotTheLock) {
   });
 
   authApp.listen(AUTH_SERVER_PORT, () => {
-    console.log(`🚀 Auth server listening on http://localhost:${AUTH_SERVER_PORT}`);
+    console.log(`Auth server listening on http://localhost:${AUTH_SERVER_PORT}`);
   });
 
   // electron
@@ -109,6 +109,7 @@ if (!gotTheLock) {
       resizable: false,
       backgroundColor: "#60FFC0CB",
       transparent: true,
+      icon: path.join(__dirname, 'assets', 'miffy.ico'),
       webPreferences: {
         preload: path.join(__dirname, "preload.js"),
         contextIsolation: true,

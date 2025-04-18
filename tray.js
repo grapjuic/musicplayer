@@ -23,14 +23,14 @@ function createTray(mainWindow) {
     tray.setContextMenu(contextMenu);
     tray.setToolTip("Music Player");
 
-    console.log("✅ Tray created successfully!");
+    console.log("tray created successfully!");
 }
 
 let lastSong = ""; // Store the last song title
 
 function updateTraySong(songTitle) {
     if (!tray) {
-        console.error("❌ Tray not initialized! Cannot update song.");
+        console.error("tray not initialized! Cannot update song.");
         return;
     }
 
@@ -39,7 +39,7 @@ function updateTraySong(songTitle) {
         lastSong = songTitle; // Update the last song
         tray.setTitle(songTitle);
 
-        console.log(`🎵 Updated Tray Title: ${songTitle}`); // ✅ Only logs when the song changes
+        console.log(`updated Tray Title: ${songTitle}`); // only logs when the song changes
     }
 }
 
