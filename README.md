@@ -9,4 +9,5 @@ a cute desktop music player built with Electron, HTML, CSS, and JavaScript — f
 - play, pause, skip, and go back
 - minimalist and aesthetic interface
 
-[Uploading chihiropic.png…]()
+![chihiropic](https://github.com/user-attachments/assets/a6b686ef-07e0-4292-9727-8fb16cedcf39)
+
