@@ -8,3 +8,5 @@ a cute desktop music player built with Electron, HTML, CSS, and JavaScript — f
 - see currently playing song (title, artist, album cover)
 - play, pause, skip, and go back
 - minimalist and aesthetic interface
+
+![Uploading chihiropic.png…]()
